@@ -24,11 +24,13 @@ class Book extends Component{
         },function(){
 
            update(this.state.book,this.state.shelf).then(function(result){
-               this.props.onSave(result);
-           }.bind(this))
+              
+           });
         }
             
         )
+
+        this.props.onSave();
 
     }
     render(){

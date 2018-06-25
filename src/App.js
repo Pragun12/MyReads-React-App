@@ -26,6 +26,8 @@ componentWillMount(){
 
 
 }
+
+
  
 
   gotoSearchBooks(){
@@ -35,11 +37,32 @@ componentWillMount(){
   }
 
   gotoBookList(){
+
+    getAll().then(function(result){
+   
+      this.setState({
+        books:result
+      })
+    }.bind(this));
+
     this.setState({
       showSearchPage:false
     })
   }
 
+  onSave(){
+   getAll().then(function(result){
+    localStorage.setItem('booklist',JSON.stringify(result));
+    
+   });
+   let savedBookList=localStorage.getItem('booklist');
+
+   this.setState({
+     books:JSON.parse(savedBookList)
+
+   })
+
+  }
  
   render() {
     
@@ -51,7 +74,7 @@ componentWillMount(){
        {this.state.showSearchPage ? (
          <SearchBooks displayBookList={this.gotoBookList.bind(this)} />
        ):(
-         <ListBooks  books={this.state.books} searchBooks={this.gotoSearchBooks.bind(this)}/>
+         <ListBooks  books={this.state.books} onSave={this.onSave.bind(this)} searchBooks={this.gotoSearchBooks.bind(this)}/>
        )   }          
       </div>
     )

@@ -19,6 +19,7 @@ class ListBooks extends Component {
   
 
  componentWillReceiveProps(props){
+  
   let c=[];
   let r=[];
   let w=[];
@@ -43,16 +44,15 @@ class ListBooks extends Component {
     })
 
  }
- 
+
   searchBooks(){
     this.props.searchBooks();
  }
 
 
- onSave(categoryList){
-  // this.props.onSave(categoryList);
-  localStorage.setItem('categoryList',JSON.stringify(categoryList));
-
+ onSave(){
+ 
+this.props.onSave();
 }
 
 
