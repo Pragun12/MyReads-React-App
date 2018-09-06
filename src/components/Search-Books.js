@@ -4,18 +4,9 @@ import Book from "./Book";
 
 class SearchBooks extends Component {
     
-    constructor(){
-        super();
-        let savedBookCategory=localStorage.getItem('bookcategory');
-        this.state={
+   state={
             books:[],
-            bookList:JSON.parse(savedBookCategory)
-            
-        }
-
-
-        
-       
+   
     }
     
     displayBookList(){
@@ -26,6 +17,8 @@ class SearchBooks extends Component {
 
        
         let userInput=e.target.value;
+
+        console.log(userInput);
 
         let checkForWhiteSpace=userInput.replace(/ /g,'');
     
@@ -38,18 +31,23 @@ class SearchBooks extends Component {
         }.bind(this));
 
        
+       
+        }
+        else{
+            
+            this.setState({
+                books:[]
+            });
         }
        
        
     }
-    onSave(categoryList){
-       
-       localStorage.setItem('categoryList',JSON.stringify(categoryList));
-
-    }
-
+    
    
     render(){
+
+        console.log(this.state.books);
+
         let books_result='';
        
         let bookArry=this.state.books;
@@ -59,16 +57,12 @@ class SearchBooks extends Component {
             }
             else{
             books_result=bookArry.map(book=>{
-                let cat='none';
-                if(this.state.bookList.find(x=>x.id===book.id)){
-                    cat=this.state.bookList.find(x=>x.id===book.id).category;
-                }
-                
+               
                 
                   return(
                       <li key={book.id} id={book.id}>
                           
-                        <Book book={book}  category={cat} onSave={this.onSave.bind(this)}/>
+                        <Book book={book}  category='none'/>
                           
                          
                     </li>

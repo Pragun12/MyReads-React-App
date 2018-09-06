@@ -5,56 +5,17 @@ import Book from "./Book";
 
 class ListBooks extends Component {
     
-  constructor(){
-    super();
-    this.state={
-      currentlyReading:[],
-      read:[],
-      wantToRead:[]
-    }
-
-    
-  }
-
   
 
- componentWillReceiveProps(props){
-  let c=[];
-  let r=[];
-  let w=[];
-    props.books.map(book=>{
-      
-      if(book.shelf==='currentlyReading'){
-       c.push(book);
-
-      }
-      else if(book.shelf==='read'){
-        r.push(book);
-      }
-      else if(book.shelf==='wantToRead'){
-        w.push(book);
-      }
-    })  
- 
-    this.setState({
-      currentlyReading:c,
-      read:r,
-      wantToRead:w
-    })
-
- }
  
   searchBooks(){
     this.props.searchBooks();
  }
 
-
- onSave(categoryList){
-  // this.props.onSave(categoryList);
-  localStorage.setItem('categoryList',JSON.stringify(categoryList));
-
+booksUpdated(){
+  this.props.booksUpdated();
 }
-
+ 
 
 
     render(){
@@ -62,12 +23,12 @@ class ListBooks extends Component {
     
     
     
-     let currentlyReading_element=this.state.currentlyReading.map(book=>{
+     let currentlyReading=this.props.books.filter(book=>book.shelf==='currentlyReading').map(book=>{
 
      return(
       <li key={book.id} id={book.id}>
                           
-      <Book book={book}  category="currentlyReading" onSave={this.onSave.bind(this)}/>
+      <Book book={book}  category={book.shelf} booksUpdated={this.booksUpdated.bind(this)}/>
         
        
        </li>
@@ -75,12 +36,13 @@ class ListBooks extends Component {
 
      });
 
-     let read_element=this.state.read.map(book=>{
+
+     let wantToRead=this.props.books.filter(book=>book.shelf==='wantToRead').map(book=>{
 
       return(
        <li key={book.id} id={book.id}>
                            
-       <Book book={book}  category="read" onSave={this.onSave.bind(this)}/>
+       <Book book={book}  category={book.shelf} booksUpdated={this.booksUpdated.bind(this)}/>
          
         
         </li>
@@ -89,19 +51,22 @@ class ListBooks extends Component {
       });
 
 
-      let wanttoread_element=this.state.wantToRead.map(book=>{
+      let read=this.props.books.filter(book=>book.shelf==='read').map(book=>{
 
         return(
          <li key={book.id} id={book.id}>
                              
-         <Book book={book}  category="wantToRead" onSave={this.onSave.bind(this)}/>
+         <Book book={book}  category={book.shelf} booksUpdated={this.booksUpdated.bind(this)}/>
            
           
           </li>
          )
    
         });
-     
+
+    
+
+      
         return(
 
             <div className="list-books">
@@ -114,7 +79,9 @@ class ListBooks extends Component {
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                   {currentlyReading_element}
+                  
+                      {currentlyReading}
+
                     </ol>
                     </div>
                 </div>
@@ -123,7 +90,9 @@ class ListBooks extends Component {
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                     
-                         {wanttoread_element}    
+                      {wantToRead}
+
+
                     </ol>
                   </div>
                 </div>
@@ -131,8 +100,8 @@ class ListBooks extends Component {
                   <h2 className="bookshelf-title">Read</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                     
-                    {read_element} 
+                     {read}
+                   
                     </ol>
                   </div>
                 </div>

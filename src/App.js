@@ -37,10 +37,19 @@ componentWillMount(){
   gotoBookList(){
     this.setState({
       showSearchPage:false
-    })
+    });
+    this.booksUpdated();
   }
 
- 
+ booksUpdated(){
+  getAll().then(function(result){
+   
+    this.setState({
+      books:result
+    })
+  }.bind(this));
+ }
+
   render() {
     
    
@@ -51,7 +60,8 @@ componentWillMount(){
        {this.state.showSearchPage ? (
          <SearchBooks displayBookList={this.gotoBookList.bind(this)} />
        ):(
-         <ListBooks  books={this.state.books} searchBooks={this.gotoSearchBooks.bind(this)}/>
+         <ListBooks  books={this.state.books} searchBooks={this.gotoSearchBooks.bind(this)}
+          booksUpdated={this.booksUpdated.bind(this)}/>
        )   }          
       </div>
     )
